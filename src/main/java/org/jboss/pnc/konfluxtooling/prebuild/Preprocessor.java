@@ -177,7 +177,7 @@ public class Preprocessor implements Runnable {
         }
     }
 
-    private String getContainerFile() {
+    String getContainerFile() {
         String containerFile = """
                 FROM %s
                 USER 0
@@ -295,7 +295,6 @@ public class Preprocessor implements Runnable {
                       <protocol>http</protocol>
                       <host>domain-proxy</host>
                       <port>80</port>
-                      <!-- <username>build-ADDTW3JAGHYAA+tracking</username> -->
                       <username>${BUILD_ID}+tracking</username>
                       <password>${ACCESS_TOKEN}</password>
                       <nonProxyHosts>${PROXY_URL}|localhost</nonProxyHosts>
