@@ -1,0 +1,9 @@
+quarkus:
+  application:
+    name: konflux-tooling
+  log:
+    category:
+      "org.jboss.pnc.konfluxtooling":
+        level: INFO
+  http:
+    port: 8084

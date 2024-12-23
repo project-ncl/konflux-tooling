@@ -80,6 +80,8 @@ public class CopyArtifactsCommand implements Runnable {
 
             Log.infof("Found %d POMs and %d JARs in %s", pomFiles.size(), jarFiles.size(), sourcePath);
 
+            Files.createDirectories(deployPath);
+
             for (var entry : pomFiles.entrySet()) {
                 var gav = entry.getKey();
                 Log.debugf("POM has GAV %s", gavToCoords(gav));
