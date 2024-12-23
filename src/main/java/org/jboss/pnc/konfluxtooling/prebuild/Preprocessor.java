@@ -196,7 +196,7 @@ public class Preprocessor implements Runnable {
                     USER 0
                     WORKDIR /var/workdir
                     COPY --from=0 /var/workdir/ /var/workdir/
-                    RUN /opt/jboss/container/java/run/run-java.sh copy-artifacts --source-path=/var/workdir/workspace/source --deploy-path=/var/workdir/workspace/artifacts
+                    RUN /opt/jboss/container/java/run/run-java.sh -Dquarkus.http.port=8084 copy-artifacts --source-path=/var/workdir/workspace/source --deploy-path=/var/workdir/workspace/artifacts
                     FROM scratch
                     COPY --from=1 /var/workdir/workspace/artifacts /deployment/
                     COPY --from=1 /var/workdir/build.log /log/
@@ -295,7 +295,6 @@ public class Preprocessor implements Runnable {
                       <protocol>http</protocol>
                       <host>domain-proxy</host>
                       <port>80</port>
-                      <!-- <username>build-ADDTW3JAGHYAA+tracking</username> -->
                       <username>${BUILD_ID}+tracking</username>
                       <password>${ACCESS_TOKEN}</password>
                       <nonProxyHosts>${PROXY_URL}|localhost</nonProxyHosts>
