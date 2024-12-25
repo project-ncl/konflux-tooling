@@ -15,6 +15,8 @@ import org.jboss.pnc.bifrost.upload.TagOption;
 import io.quarkus.logging.Log;
 import picocli.CommandLine;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 @CommandLine.Command(name = "upload-log")
 public class UploadLogCommand implements Runnable {
 
@@ -25,29 +27,38 @@ public class UploadLogCommand implements Runnable {
     @CommandLine.Option(names = "--file", required = true)
     String logFile;
 
-    @CommandLine.Option(names = "--bifrost-url", required = true)
+    @CommandLine.Option(names = "--bifrost-url")
     String bifrostURL;
 
     @CommandLine.Option(names = "--max-retries")
     int maxRetries = DEFAULT_MAX_RETRIES;
 
-    @CommandLine.Option(names = "--delay-seconds")
+    @CommandLine.Option(names = "--delay-seconds",
+            description = "in case of retries this is the delay in seconds before next retry")
     int delaySeconds = DEFAULT_DELAY_SECONDS;
 
-    @CommandLine.Option(names = "--process-context", required = true)
+    @CommandLine.Option(names = "--process-context",
+            description = "id of an long running operation (in this case the build-id is used)")
     String processContext;
 
-    @CommandLine.Option(names = "--process-context-variant", required = true)
+    @CommandLine.Option(names = "--process-context-variant",
+            description = "in case there are subtasks or retries of individual steps this field can be used to add another ID")
     String processContextVariant;
 
-    @CommandLine.Option(names = "--tmp", required = true)
-    String tmp;
+    @CommandLine.Option(names = "--tmp",
+            description = "temp build or not, used for a log clean-up")
+    String tmp = "false";
 
-    @CommandLine.Option(names = "--request-context", required = true)
+    @CommandLine.Option(names = "--request-context",
+            description = "an id of the initial (http) request that triggered this and potentially other processes")
     String requestContext;
 
     public void run() {
         try {
+            if (isBlank(bifrostURL)) {
+                Log.info("No bifrost url specified and no log upload is performed");
+                return;
+            }
             var logFilePath = Path.of(logFile);
             var file = logFilePath.toFile();
             if (!file.exists()) {
