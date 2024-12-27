@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.pnc.bifrost.upload.BifrostLogUploader;
 import org.jboss.pnc.bifrost.upload.LogMetadata;
 import org.jboss.pnc.bifrost.upload.TagOption;
@@ -23,6 +25,9 @@ public class UploadLogCommand implements Runnable {
     private static final int DEFAULT_MAX_RETRIES = 4;
 
     private static final int DEFAULT_DELAY_SECONDS = 60;
+
+    @ConfigProperty(name = "access.token")
+    Optional<String> accessToken;
 
     @CommandLine.Option(names = "--file", required = true)
     String logFile;
@@ -83,7 +88,7 @@ public class UploadLogCommand implements Runnable {
         BifrostLogUploader logUploader = new BifrostLogUploader(URI.create(bifrostURL),
                 maxRetries,
                 delaySeconds,
-                () -> System.getProperty("ACCESS_TOKEN"));
+                () -> accessToken.orElse(""));
 
         LogMetadata logMetadata = LogMetadata.builder()
                 .tag(TagOption.BUILD_LOG)
