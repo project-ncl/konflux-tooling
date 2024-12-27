@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.pnc.bifrost.upload.BifrostLogUploader;
 import org.jboss.pnc.bifrost.upload.LogMetadata;
 import org.jboss.pnc.bifrost.upload.TagOption;
@@ -24,6 +26,9 @@ public class UploadLogCommand implements Runnable {
 
     private static final int DEFAULT_DELAY_SECONDS = 60;
 
+    @ConfigProperty(name = "access.token")
+    Optional<String> accessToken;
+
     @CommandLine.Option(names = "--file", required = true)
     String logFile;
 
@@ -33,24 +38,19 @@ public class UploadLogCommand implements Runnable {
     @CommandLine.Option(names = "--max-retries")
     int maxRetries = DEFAULT_MAX_RETRIES;
 
-    @CommandLine.Option(names = "--delay-seconds",
-            description = "in case of retries this is the delay in seconds before next retry")
+    @CommandLine.Option(names = "--delay-seconds", description = "in case of retries this is the delay in seconds before next retry")
     int delaySeconds = DEFAULT_DELAY_SECONDS;
 
-    @CommandLine.Option(names = "--process-context",
-            description = "id of an long running operation (in this case the build-id is used)")
+    @CommandLine.Option(names = "--process-context", description = "id of an long running operation (in this case the build-id is used)")
     String processContext;
 
-    @CommandLine.Option(names = "--process-context-variant",
-            description = "in case there are subtasks or retries of individual steps this field can be used to add another ID")
+    @CommandLine.Option(names = "--process-context-variant", description = "in case there are subtasks or retries of individual steps this field can be used to add another ID")
     String processContextVariant;
 
-    @CommandLine.Option(names = "--tmp",
-            description = "temp build or not, used for a log clean-up")
+    @CommandLine.Option(names = "--tmp", description = "temp build or not, used for a log clean-up")
     String tmp = "false";
 
-    @CommandLine.Option(names = "--request-context",
-            description = "an id of the initial (http) request that triggered this and potentially other processes")
+    @CommandLine.Option(names = "--request-context", description = "an id of the initial (http) request that triggered this and potentially other processes")
     String requestContext;
 
     public void run() {
@@ -83,7 +83,7 @@ public class UploadLogCommand implements Runnable {
         BifrostLogUploader logUploader = new BifrostLogUploader(URI.create(bifrostURL),
                 maxRetries,
                 delaySeconds,
-                () -> System.getProperty("ACCESS_TOKEN"));
+                () -> accessToken.orElse(""));
 
         LogMetadata logMetadata = LogMetadata.builder()
                 .tag(TagOption.BUILD_LOG)
