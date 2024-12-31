@@ -13,7 +13,6 @@ import picocli.CommandLine;
 
 /**
  * We keep all the options the same between maven, gradle, sbt and ant for now to keep the pipeline setup simpler.
- * Some of these may be ignored by different processors
  */
 @CommandLine.Command(name = "prepare")
 public class Preprocessor implements Runnable {
