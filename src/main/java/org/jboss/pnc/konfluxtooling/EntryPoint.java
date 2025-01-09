@@ -3,7 +3,7 @@ package org.jboss.pnc.konfluxtooling;
 import org.jboss.pnc.konfluxtooling.deploy.CopyArtifactsCommand;
 import org.jboss.pnc.konfluxtooling.deploy.DeployCommand;
 import org.jboss.pnc.konfluxtooling.notification.NotifyCommand;
-import org.jboss.pnc.konfluxtooling.prebuild.Preprocessor;
+import org.jboss.pnc.konfluxtooling.prebuild.PreprocessorCommand;
 
 import io.quarkus.picocli.runtime.annotations.TopCommand;
 import picocli.CommandLine;
@@ -13,7 +13,7 @@ import picocli.CommandLine;
         CopyArtifactsCommand.class,
         DeployCommand.class,
         NotifyCommand.class,
-        Preprocessor.class
+        PreprocessorCommand.class
 })
 public class EntryPoint {
 }

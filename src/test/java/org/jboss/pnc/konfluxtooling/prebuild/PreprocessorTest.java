@@ -31,10 +31,10 @@ public class PreprocessorTest {
     @Test
     public void testGenerate(@TempDir Path tempDir) throws IOException, InterruptedException {
 
-        Preprocessor preprocessor = new Preprocessor();
-        preprocessor.type = Preprocessor.ToolType.ANT;
+        PreprocessorCommand preprocessor = new PreprocessorCommand();
+        preprocessor.type = PreprocessorCommand.ToolType.ANT;
         preprocessor.recipeImage = "quay.io/redhat-user-workloads/konflux-jbs-pnc-tenant/jvm-build-service-builder-images/ubi7:latest";
-        preprocessor.buildRequestProcessorImage = "quay.io/redhat-user-workloads/konflux-jbs-pnc-tenant/konflux-tooling:latest";
+        preprocessor.toolingImage = "quay.io/redhat-user-workloads/konflux-jbs-pnc-tenant/konflux-tooling:latest";
         preprocessor.buildRoot = tempDir;
         preprocessor.javaVersion = "7";
         preprocessor.buildToolVersion = "1.9.16";

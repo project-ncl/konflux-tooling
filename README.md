@@ -5,7 +5,7 @@ provided, all of which are intended to be called from a Tekton pipeline e.g.
 
 ```
     - name: deploy
-      image: $(params.JVM_BUILD_SERVICE_REQPROCESSOR_IMAGE)
+      image: $(params.PNC_KONFLUX_TOOLING_IMAGE)
       securityContext:
         runAsUser: 0
       volumeMounts:
@@ -26,10 +26,10 @@ provided, all of which are intended to be called from a Tekton pipeline e.g.
 
 The current tools are:
 
-* Preprocessor : used to preprocess build sources to add a build script and Containerfile.
-* Deploy: used (with MavenRepositoryDeployer) to deploy files to a maven repository.
-* CopyArtifacts: used by Ant builds to move built artifacts to the correct location.
-* Notify: used to notify PNC components that a pipeline has finished.
+* copy-artifacts: used by Ant builds to move built artifacts to the correct location.
+* deploy: used (with MavenRepositoryDeployer) to deploy files to a maven repository.
+* notify: used to notify PNC components that a pipeline has finished.
+* prepare : used to preprocess build sources to add a build script and Containerfile.
 
 
 It is deployed as an image to https://quay.io/repository/redhat-user-workloads/konflux-jbs-pnc-tenant/konflux-tooling?tab=tags&tag=latest
