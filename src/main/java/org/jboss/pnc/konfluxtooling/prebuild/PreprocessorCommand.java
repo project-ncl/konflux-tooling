@@ -15,7 +15,7 @@ import picocli.CommandLine;
  * We keep all the options the same between maven, gradle, sbt and ant for now to keep the pipeline setup simpler.
  */
 @CommandLine.Command(name = "prepare")
-public class Preprocessor implements Runnable {
+public class PreprocessorCommand implements Runnable {
 
     /**
      * Equivalent to <code>$(workspaces.source.path)/source</code>
@@ -27,8 +27,8 @@ public class Preprocessor implements Runnable {
     @CommandLine.Option(names = "--recipe-image", required = true)
     String recipeImage;
 
-    @CommandLine.Option(names = "--request-processor-image", required = true)
-    String buildRequestProcessorImage;
+    @CommandLine.Option(names = "--tooling-image", required = true)
+    String toolingImage;
 
     @CommandLine.Option(names = "--java-version", required = true)
     String javaVersion;
@@ -201,7 +201,7 @@ public class Preprocessor implements Runnable {
         if (type == ToolType.ANT) {
             // Don't think we need to mess with keystore as copy-artifacts is simply calling copy commands.
             containerFile += """
-                    FROM %s AS build-request-processor
+                    FROM %s AS artifact-post-process
                     USER 0
                     WORKDIR /var/workdir
                     COPY --from=0 /var/workdir/ /var/workdir/
@@ -210,7 +210,7 @@ public class Preprocessor implements Runnable {
                     COPY --from=1 /var/workdir/workspace/artifacts /deployment/
                     COPY --from=1 /var/workdir/build.log /log/
                     """
-                    .formatted(buildRequestProcessorImage);
+                    .formatted(toolingImage);
         } else {
             containerFile += """
                     FROM scratch
