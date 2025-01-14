@@ -11,6 +11,7 @@ release.properties
 *.ipr
 *.iml
 *.iws
+.cache/
 
 # Plugin directory
 /.quarkus/cli/plugins/
