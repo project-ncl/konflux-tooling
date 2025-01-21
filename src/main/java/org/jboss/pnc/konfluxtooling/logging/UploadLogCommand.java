@@ -1,5 +1,7 @@
 package org.jboss.pnc.konfluxtooling.logging;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.io.File;
 import java.math.BigInteger;
 import java.net.URI;
@@ -16,8 +18,6 @@ import org.jboss.pnc.bifrost.upload.TagOption;
 
 import io.quarkus.logging.Log;
 import picocli.CommandLine;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @CommandLine.Command(name = "upload-log")
 public class UploadLogCommand implements Runnable {
