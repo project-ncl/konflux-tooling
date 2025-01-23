@@ -52,8 +52,19 @@ public class CopyArtifactsCommand implements Runnable {
                                 Log.warnf("Skipping POM %s with invalid version %s", fileName, version);
                             } else {
                                 var packaging = project.getPackaging();
-                                var gav = new Gav(project.getGroupId(), project.getArtifactId(), version, null, packaging, null,
-                                        null, null, false, null, false, null);
+                                var gav = new Gav(
+                                        project.getGroupId(),
+                                        project.getArtifactId(),
+                                        version,
+                                        null,
+                                        packaging,
+                                        null,
+                                        null,
+                                        null,
+                                        false,
+                                        null,
+                                        false,
+                                        null);
 
                                 var existingPath = pomFiles.get(gav);
 
@@ -106,14 +117,17 @@ public class CopyArtifactsCommand implements Runnable {
 
                 var jarDestFile = Path.of(fullPath + ".jar");
                 var jarName = jarDestFile.getFileName().toString();
-                var files = jarFiles.stream().filter(jarPath -> jarPath.getFileName().toString().equals(jarName)).toList();
+                var files = jarFiles.stream()
+                        .filter(jarPath -> jarPath.getFileName().toString().equals(jarName))
+                        .toList();
                 var jarSourceFile = (Path) null;
 
                 if (!files.isEmpty()) {
                     jarSourceFile = files.get(0);
                 } else {
                     var unversionedJarName = jarName.replace("-" + gav.getVersion(), "");
-                    files = jarFiles.stream().filter(jarPath -> jarPath.getFileName().toString().equals(unversionedJarName))
+                    files = jarFiles.stream()
+                            .filter(jarPath -> jarPath.getFileName().toString().equals(unversionedJarName))
                             .toList();
 
                     if (!files.isEmpty()) {

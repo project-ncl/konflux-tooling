@@ -51,8 +51,11 @@ public class NotifyCommand implements Runnable {
             Request callback = objectMapper.readValue(context, Request.class);
 
             Log.infof("Notification for build %s with status %s and callback %s", buildId, status, callback);
-            PipelineNotification notification = PipelineNotification.builder().buildId(buildId).status(status)
-                    .completionCallback((Request) callback.getAttachment()).build();
+            PipelineNotification notification = PipelineNotification.builder()
+                    .buildId(buildId)
+                    .status(status)
+                    .completionCallback((Request) callback.getAttachment())
+                    .build();
             String body = objectMapper.writeValueAsString(notification);
 
             HttpRequest.Builder builder = HttpRequest.newBuilder()

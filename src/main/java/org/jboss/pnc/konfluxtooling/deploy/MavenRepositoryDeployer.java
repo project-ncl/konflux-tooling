@@ -41,8 +41,13 @@ public class MavenRepositoryDeployer {
 
     private final String serverId;
 
-    public MavenRepositoryDeployer(BootstrapMavenContext mvnCtx, String username, String password, String repository,
-            String serverId, Path artifacts)
+    public MavenRepositoryDeployer(
+            BootstrapMavenContext mvnCtx,
+            String username,
+            String password,
+            String repository,
+            String serverId,
+            Path artifacts)
             throws BootstrapMavenException {
         this.username = username;
         this.password = password;
@@ -59,14 +64,17 @@ public class MavenRepositoryDeployer {
     public void deploy()
             throws IOException {
         RemoteRepository result;
-        RemoteRepository initial = new RemoteRepository.Builder(serverId,
+        RemoteRepository initial = new RemoteRepository.Builder(
+                serverId,
                 "default",
                 repository).build();
         RemoteRepository.Builder builder = new RemoteRepository.Builder(initial);
 
         if (isNotEmpty(username)) {
-            builder.setAuthentication(new AuthenticationBuilder().addUsername(username)
-                    .addPassword(password).build());
+            builder.setAuthentication(
+                    new AuthenticationBuilder().addUsername(username)
+                            .addPassword(password)
+                            .build());
         } else {
             builder.setAuthentication(session.getAuthenticationSelector().getAuthentication(initial));
         }
@@ -77,7 +85,8 @@ public class MavenRepositoryDeployer {
 
         Log.infof("Configured repository %s", result);
 
-        Files.walkFileTree(artifacts,
+        Files.walkFileTree(
+                artifacts,
                 new SimpleFileVisitor<>() {
 
                     @Override
@@ -91,11 +100,14 @@ public class MavenRepositoryDeployer {
                                 if (relative.getNameCount() <= 2) {
                                     Log.errorf(
                                             "Invalid repository format. Local directory is '%s' with relative path '%s' and not enough components to calculate groupId and artifactId",
-                                            artifacts, relative);
+                                            artifacts,
+                                            relative);
                                 }
                                 // If we're in org/foobar/artifact/1.0 then the group is two up and the artifact is one up.
-                                String group = relative.getParent().getParent().toString().replace(File.separatorChar,
-                                        '.');
+                                String group = relative.getParent()
+                                        .getParent()
+                                        .toString()
+                                        .replace(File.separatorChar, '.');
                                 String artifact = relative.getParent().getFileName().toString();
                                 String version = dir.getFileName().toString();
                                 Log.info(
@@ -108,7 +120,9 @@ public class MavenRepositoryDeployer {
                                 for (var i : files) {
                                     Matcher matcher = p.matcher(i.getFileName().toString());
                                     if (matcher.matches()) {
-                                        Artifact jarArtifact = new DefaultArtifact(group, artifact,
+                                        Artifact jarArtifact = new DefaultArtifact(
+                                                group,
+                                                artifact,
                                                 matcher.group(2),
                                                 matcher.group(3),
                                                 version);

@@ -10,12 +10,14 @@ import io.quarkus.picocli.runtime.annotations.TopCommand;
 import picocli.CommandLine;
 
 @TopCommand
-@CommandLine.Command(mixinStandardHelpOptions = true, subcommands = {
-        CopyArtifactsCommand.class,
-        DeployCommand.class,
-        UploadLogCommand.class,
-        NotifyCommand.class,
-        PreprocessorCommand.class
-})
+@CommandLine.Command(
+        mixinStandardHelpOptions = true,
+        subcommands = {
+                CopyArtifactsCommand.class,
+                DeployCommand.class,
+                UploadLogCommand.class,
+                NotifyCommand.class,
+                PreprocessorCommand.class
+        })
 public class EntryPoint {
 }

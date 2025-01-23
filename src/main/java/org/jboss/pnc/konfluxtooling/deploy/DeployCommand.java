@@ -90,8 +90,13 @@ public class DeployCommand implements Runnable {
                 }
             }
             // Maven Repo Deployment
-            MavenRepositoryDeployer deployer = new MavenRepositoryDeployer(mvnCtx, mvnUser, mvnPassword.orElse(""), mvnRepo,
-                    serverId, deploymentPath);
+            MavenRepositoryDeployer deployer = new MavenRepositoryDeployer(
+                    mvnCtx,
+                    mvnUser,
+                    mvnPassword.orElse(""),
+                    mvnRepo,
+                    serverId,
+                    deploymentPath);
             deployer.deploy();
         } catch (Exception e) {
             Log.error("Deployment failed", e);
