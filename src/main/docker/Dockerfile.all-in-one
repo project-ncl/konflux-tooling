@@ -9,6 +9,10 @@ COPY ./ .
 RUN git config --global --add safe.directory /work && mvn -e -V -B package -Dmaven.test.skip=true
 
 FROM registry.access.redhat.com/ubi8/openjdk-21-runtime@sha256:418b3b6f9bc41ba969a6c7a20b06831131e30d6b4140e29a9453c6a4f08f8c21
+
+USER 0
+RUN microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y util-linux
+
 WORKDIR /work/
 
 COPY --from=builder /work/target/quarkus-app/lib/ /deployments/lib/
