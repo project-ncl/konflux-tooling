@@ -24,9 +24,11 @@ public class WireMockExtensions implements QuarkusTestResourceLifecycleManager {
         wireMockServer.stubFor(
                 put(urlEqualTo("/internal/completed"))
                         .withRequestBody(
-                                equalToJson("{\"status\":\"Succeeded\",\"buildId\":\"1234\",\"completionCallback\":null}"))
-                        .willReturn(aResponse()
-                                .withStatus(200)));
+                                equalToJson(
+                                        "{\"status\":\"Succeeded\",\"buildId\":\"1234\",\"completionCallback\":null}"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(200)));
 
         return Map.of("quarkus.rest-client.wiremockextensions.url", wireMockServer.baseUrl());
     }

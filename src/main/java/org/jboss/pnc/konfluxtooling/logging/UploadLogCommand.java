@@ -38,19 +38,27 @@ public class UploadLogCommand implements Runnable {
     @CommandLine.Option(names = "--max-retries")
     int maxRetries = DEFAULT_MAX_RETRIES;
 
-    @CommandLine.Option(names = "--delay-seconds", description = "in case of retries this is the delay in seconds before next retry")
+    @CommandLine.Option(
+            names = "--delay-seconds",
+            description = "in case of retries this is the delay in seconds before next retry")
     int delaySeconds = DEFAULT_DELAY_SECONDS;
 
-    @CommandLine.Option(names = "--process-context", description = "id of an long running operation (in this case the build-id is used)")
+    @CommandLine.Option(
+            names = "--process-context",
+            description = "id of an long running operation (in this case the build-id is used)")
     String processContext;
 
-    @CommandLine.Option(names = "--process-context-variant", description = "in case there are subtasks or retries of individual steps this field can be used to add another ID")
+    @CommandLine.Option(
+            names = "--process-context-variant",
+            description = "in case there are subtasks or retries of individual steps this field can be used to add another ID")
     String processContextVariant;
 
     @CommandLine.Option(names = "--tmp", description = "temp build or not, used for a log clean-up")
     String tmp = "false";
 
-    @CommandLine.Option(names = "--request-context", description = "an id of the initial (http) request that triggered this and potentially other processes")
+    @CommandLine.Option(
+            names = "--request-context",
+            description = "an id of the initial (http) request that triggered this and potentially other processes")
     String requestContext;
 
     public void run() {
@@ -62,8 +70,8 @@ public class UploadLogCommand implements Runnable {
             var logFilePath = Path.of(logFile);
             var file = logFilePath.toFile();
             if (!file.exists()) {
-                throw new RuntimeException(String.format(
-                        "No log file found at %s. Has the build been correctly done?", logFilePath));
+                throw new RuntimeException(
+                        String.format("No log file found at %s. Has the build been correctly done?", logFilePath));
             }
             var md5 = getMD5(logFilePath);
             uploadLogsToBifrost(file, md5);
@@ -80,7 +88,8 @@ public class UploadLogCommand implements Runnable {
     }
 
     private void uploadLogsToBifrost(File logFile, String md5) {
-        BifrostLogUploader logUploader = new BifrostLogUploader(URI.create(bifrostURL),
+        BifrostLogUploader logUploader = new BifrostLogUploader(
+                URI.create(bifrostURL),
                 maxRetries,
                 delaySeconds,
                 () -> accessToken.orElse(""));

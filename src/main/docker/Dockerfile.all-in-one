@@ -1,13 +1,12 @@
 FROM registry.access.redhat.com/ubi8/openjdk-21@sha256:3f712e2b11fea22b81636747175d68830b5cba527c2dff9172d143b9acc5612e AS builder
 
-USER root
+USER 0
 RUN microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y git
 
-USER 185
 WORKDIR /work
 COPY ./ .
 
-RUN mvn -V -B package -DskipTests
+RUN git config --global --add safe.directory /work && mvn -e -V -B package -Dmaven.test.skip=true
 
 FROM registry.access.redhat.com/ubi8/openjdk-21-runtime@sha256:418b3b6f9bc41ba969a6c7a20b06831131e30d6b4140e29a9453c6a4f08f8c21
 WORKDIR /work/

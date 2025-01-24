@@ -24,7 +24,10 @@ import io.quarkus.test.common.ResourceArg;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-@QuarkusTestResource(value = LogCollectingTestResource.class, restrictToAnnotatedClass = true, initArgs = @ResourceArg(name = LogCollectingTestResource.LEVEL, value = "FINE"))
+@QuarkusTestResource(
+        value = LogCollectingTestResource.class,
+        restrictToAnnotatedClass = true,
+        initArgs = @ResourceArg(name = LogCollectingTestResource.LEVEL, value = "FINE"))
 @QuarkusTestResource(WireMockExtensions.class)
 public class NotificationTest {
 
@@ -42,8 +45,11 @@ public class NotificationTest {
         notifyCommand.buildId = "1234";
         notifyCommand.run();
         List<LogRecord> logRecords = LogCollectingTestResource.current().getRecords();
-        assertTrue(logRecords.stream()
-                .anyMatch(r -> LogCollectingTestResource.format(r).contains("No callback configured ; unable to notify")));
+        assertTrue(
+                logRecords.stream()
+                        .anyMatch(
+                                r -> LogCollectingTestResource.format(r)
+                                        .contains("No callback configured ; unable to notify")));
     }
 
     @Test
@@ -64,8 +70,10 @@ public class NotificationTest {
         notifyCommand.run();
 
         List<LogRecord> logRecords = LogCollectingTestResource.current().getRecords();
-        assertTrue(logRecords.stream()
-                .anyMatch(r -> LogCollectingTestResource.format(r)
-                        .contains("Response (PUT http://localhost:8080/internal/completed) 200")));
+        assertTrue(
+                logRecords.stream()
+                        .anyMatch(
+                                r -> LogCollectingTestResource.format(r)
+                                        .contains("Response (PUT http://localhost:8080/internal/completed) 200")));
     }
 }

@@ -21,7 +21,9 @@ import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 public class PreprocessorTest {
 
     {
-        System.setProperty("org.slf4j.simpleLogger.log.com.github.dockerjava.api.command.BuildImageResultCallback", "debug");
+        System.setProperty(
+                "org.slf4j.simpleLogger.log.com.github.dockerjava.api.command.BuildImageResultCallback",
+                "debug");
     }
 
     @SystemStub
@@ -42,7 +44,9 @@ public class PreprocessorTest {
         preprocessor.run();
 
         Process process = new ProcessBuilder("buildah", "build", "-f", tempDir.toString() + "/.jbs/Containerfile", ".")
-                .directory(tempDir.toFile()).redirectErrorStream(true).start();
+                .directory(tempDir.toFile())
+                .redirectErrorStream(true)
+                .start();
 
         String text = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 

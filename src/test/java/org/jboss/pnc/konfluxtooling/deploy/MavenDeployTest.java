@@ -32,7 +32,10 @@ import io.quarkus.test.common.ResourceArg;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-@QuarkusTestResource(value = LogCollectingTestResource.class, restrictToAnnotatedClass = true, initArgs = @ResourceArg(name = LogCollectingTestResource.LEVEL, value = "FINE"))
+@QuarkusTestResource(
+        value = LogCollectingTestResource.class,
+        restrictToAnnotatedClass = true,
+        initArgs = @ResourceArg(name = LogCollectingTestResource.LEVEL, value = "FINE"))
 public class MavenDeployTest {
     private static final String GROUP = "com.company.foo";
     private static final String VERSION = "3.25.8";
@@ -43,8 +46,10 @@ public class MavenDeployTest {
 
     // ArtifactName -> [ collection of Artifacts ]
     private final Map<String, Set<String>> ARTIFACT_FILE_MAP = Map.of(
-            FOO_BAR, Set.of("foo-bar-" + VERSION + ".jar", "foo-bar-" + VERSION + "-tests.jar"),
-            FOO_BAZ, Set.of("foo-baz-" + VERSION + ".pom"));
+            FOO_BAR,
+            Set.of("foo-bar-" + VERSION + ".jar", "foo-bar-" + VERSION + "-tests.jar"),
+            FOO_BAZ,
+            Set.of("foo-baz-" + VERSION + ".pom"));
 
     @Inject
     BootstrapMavenContext mvnContext;
@@ -71,13 +76,20 @@ public class MavenDeployTest {
         deployCommand.run();
         List<LogRecord> logRecords = LogCollectingTestResource.current().getRecords();
 
-        assertTrue(logRecords.stream()
-                .anyMatch(r -> LogCollectingTestResource.format(r).contains("no pom file found with files")));
-        assertTrue(logRecords.stream().anyMatch(r -> LogCollectingTestResource.format(r)
-                .contains("Deploying [com.company.foo:foo-baz:pom:3.25.8]")));
-        assertTrue(logRecords.stream().anyMatch(r -> LogCollectingTestResource.format(r)
-                .contains(
-                        "Deploying [com.company.foo:foo-bar:jar:tests:3.25.8, com.company.foo:foo-bar:jar:3.25.8, com.company.foo:foo-bar:pom:3.25.8]")));
+        assertTrue(
+                logRecords.stream()
+                        .anyMatch(r -> LogCollectingTestResource.format(r).contains("no pom file found with files")));
+        assertTrue(
+                logRecords.stream()
+                        .anyMatch(
+                                r -> LogCollectingTestResource.format(r)
+                                        .contains("Deploying [com.company.foo:foo-baz:pom:3.25.8]")));
+        assertTrue(
+                logRecords.stream()
+                        .anyMatch(
+                                r -> LogCollectingTestResource.format(r)
+                                        .contains(
+                                                "Deploying [com.company.foo:foo-bar:jar:tests:3.25.8, com.company.foo:foo-bar:jar:3.25.8, com.company.foo:foo-bar:pom:3.25.8]")));
 
         File[] files = Paths.get(deployment.toString(), "com/company/foo/foo-bar/3.25.8").toFile().listFiles();
         assertNotNull(files);
@@ -95,7 +107,10 @@ public class MavenDeployTest {
         // Add data to artifacts folder
         for (Map.Entry<String, Set<String>> artifactFiles : ARTIFACT_FILE_MAP.entrySet()) {
             String groupPath = GROUP.replace(DOT, File.separator);
-            Path testDir = Paths.get(artifacts.toString(), groupPath, artifactFiles.getKey(),
+            Path testDir = Paths.get(
+                    artifacts.toString(),
+                    groupPath,
+                    artifactFiles.getKey(),
                     VERSION);
             Files.createDirectories(testDir);
             for (String value : artifactFiles.getValue()) {
@@ -108,7 +123,10 @@ public class MavenDeployTest {
                 String sha1 = sha1(Files.readAllBytes(testFile));
                 Files.writeString(shaFile, sha1);
             }
-            Optional<String> jarFile = artifactFiles.getValue().stream().filter(s -> s.endsWith(VERSION + ".jar")).findAny();
+            Optional<String> jarFile = artifactFiles.getValue()
+                    .stream()
+                    .filter(s -> s.endsWith(VERSION + ".jar"))
+                    .findAny();
             if (jarFile.isPresent()) {
                 Path pomFile = Paths.get(testDir.toString(), jarFile.get().replace(".jar", ".pom"));
                 Model model = new Model();
