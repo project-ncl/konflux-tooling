@@ -16,6 +16,7 @@ import org.jboss.pnc.api.dto.Request;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkus.logging.Log;
+import org.jboss.pnc.api.konfluxbuilddriver.dto.PipelineNotification;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "notify")
