@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.jboss.pnc.api.constants.HttpHeaders;
 import org.jboss.pnc.api.dto.Request;
+import org.jboss.pnc.api.konfluxbuilddriver.dto.PipelineStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +42,7 @@ public class NotificationTest {
     @Test
     public void testNoNotify() {
         NotifyCommand notifyCommand = new NotifyCommand();
-        notifyCommand.status = "Succeeded";
+        notifyCommand.status = PipelineStatus.Succeeded;
         notifyCommand.buildId = "1234";
         notifyCommand.run();
         List<LogRecord> logRecords = LogCollectingTestResource.current().getRecords();
@@ -63,7 +64,7 @@ public class NotificationTest {
                 .build();
 
         NotifyCommand notifyCommand = new NotifyCommand();
-        notifyCommand.status = "Succeeded";
+        notifyCommand.status = PipelineStatus.Succeeded;
         notifyCommand.buildId = "1234";
         notifyCommand.objectMapper = new ObjectMapper();
         notifyCommand.context = notifyCommand.objectMapper.writeValueAsString(request);
