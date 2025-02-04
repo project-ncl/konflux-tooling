@@ -12,11 +12,12 @@ import jakarta.inject.Inject;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.pnc.api.dto.Request;
+import org.jboss.pnc.api.konfluxbuilddriver.dto.PipelineNotification;
+import org.jboss.pnc.api.konfluxbuilddriver.dto.PipelineStatus;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkus.logging.Log;
-import org.jboss.pnc.api.konfluxbuilddriver.dto.PipelineNotification;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "notify")
@@ -25,8 +26,8 @@ public class NotifyCommand implements Runnable {
     @CommandLine.Option(names = "--build-id", required = true)
     String buildId;
 
-    @CommandLine.Option(names = "--status", required = true)
-    String status;
+    @CommandLine.Option(names = "--status", description = "Valid values: ${COMPLETION-CANDIDATES}", required = true)
+    PipelineStatus status;
 
     @CommandLine.Option(names = "--context", required = true)
     String context;
