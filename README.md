@@ -5,7 +5,7 @@ provided, all of which are intended to be called from a Tekton pipeline e.g.
 
 ```
     - name: deploy
-      image: $(params.PNC_KONFLUX_TOOLING_IMAGE)
+      image: quay.io/konflux-ci/pnc-konflux-tooling:latest
       securityContext:
         runAsUser: 0
       volumeMounts:
@@ -32,4 +32,4 @@ The current tools are:
 * prepare : used to preprocess build sources to add a build script and Containerfile.
 
 
-It is deployed as an image to https://quay.io/repository/redhat-user-workloads/konflux-jbs-pnc-tenant/konflux-tooling?tab=tags&tag=latest
+It is deployed as an image to https://quay.io/repository/redhat-user-workloads/konflux-jbs-pnc-tenant/konflux-tooling?tab=tags&tag=latest and then released to https://quay.io/repository/konflux-ci/pnc-konflux-tooling
