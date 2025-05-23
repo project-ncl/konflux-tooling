@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/openjdk-21@sha256:723ab90bd26bb25d6d3c274bfabe5eae1866b24a0f3fc88e98fffa643b8a2198 AS builder
+FROM registry.access.redhat.com/ubi8/openjdk-21@sha256:b8d81afe9ed51eb8faa3e522b386ff20f063226997bb3cd2ad4eea6f64f04fe6 AS builder
 
 USER 0
 RUN microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y git
