@@ -8,7 +8,7 @@ COPY ./ .
 
 RUN git config --global --add safe.directory /work && mvn -e -V -B package -Dmaven.test.skip=true
 
-FROM registry.access.redhat.com/ubi8/openjdk-21-runtime@sha256:667693a2ec1f36fdb9fba546961074a89b9f8f1a0dcb2d1cb7cb905bdacd2f98
+FROM registry.access.redhat.com/ubi8/openjdk-21-runtime@sha256:06d02ab870e36df9a1680fbfa8b04c7d6f1d8fb936764020586944070f8d99f9
 WORKDIR /work/
 
 COPY --from=builder /work/LICENSE /licenses/
